@@ -4,7 +4,7 @@ import USER from "../models/User";
 import { io } from "../app";
 import { decode } from "../helper/jwtTokenize";
 
-let clientsocket
+let clientsocket: any = undefined
 
 export function notificationserver(server){
 
@@ -20,7 +20,7 @@ export function notificationserver(server){
             console.log("someone has disconnected");
             
         } )
-        clientsocket= socket
+        clientsocket = socket
     })
 
    
@@ -33,8 +33,6 @@ async function sendNotitfictation(buyerid: number| null, sellerid: string,subjec
         const seller :any =  await USER.findByPk(parseInt(sellerid))
         const buyer :any =  await USER.findOne({where:{id:buyerid}})             
         const admins: any = await USER.findAll({where : {roleId: 1}})
-
-                
          admins.forEach(async (element: any) => {
             const note =
         {
@@ -45,8 +43,10 @@ async function sendNotitfictation(buyerid: number| null, sellerid: string,subjec
         }
         const notification = await Notification.create(note)    
 
-            await sendEmail(element.email, subject,Adminmessage) 
+            await sendEmail(element.email, subject,Adminmessage)             
+            if(clientsocket){
             clientsocket.in(`${element.id}`).emit("notification", notification)  
+                    }
             
          });   
                 
@@ -60,7 +60,9 @@ async function sendNotitfictation(buyerid: number| null, sellerid: string,subjec
             }
             const notification = await Notification.create(note)    
          await sendEmail(buyer.email,subject, BuyerMessage)
+         if(clientsocket){
          clientsocket.in(`${buyer.id}`).emit("notification", notification)
+         }
         }
          if(seller){
             const note =
@@ -72,7 +74,9 @@ async function sendNotitfictation(buyerid: number| null, sellerid: string,subjec
             }
             const notification = await Notification.create(note)    
          await sendEmail(seller.email,subject,sellerMessage)
+         if(clientsocket){
          clientsocket.in(`${seller.id}`).emit("notification", notification)
+         }
          }
          
         } catch (error: any ) {

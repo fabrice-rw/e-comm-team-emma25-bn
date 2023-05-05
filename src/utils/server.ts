@@ -12,16 +12,13 @@ import bodyParser from "body-parser"
 import { config } from 'dotenv';
 import NotificationRouter from '../routes/notification';
 config()
-const allowedOrigins: string[] = process.env.ALLOWED_ORIGINS?.split(',') || [];
+// const allowedOrigins: string[] = process.env.ALLOWED_ORIGINS?.split(',') || [];
 // use the env values to add the appropriate routes 
 function createServer() {
 
   const app: Application = express()
 
-  app.use(cors({
-    origin: allowedOrigins,
-    credentials: true,
-  }));
+  app.use(cors());
 
   app.use(bodyParser.json({
     verify: (req, res, buf) => {
