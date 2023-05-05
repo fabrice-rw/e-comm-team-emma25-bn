@@ -8,7 +8,7 @@ class ORDER {
         const orderid = req.params.orderid
         const orderstatus = req.body.status;
         try {
-            const order: any = await Order.findOne({where: {id: orderid}})
+            const order: any = await Order.findOne({where: {Orderid: orderid}})
             if(order){
                 order.status = orderstatus
                 await order.save()
