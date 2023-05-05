@@ -1,4 +1,4 @@
-import {  DataTypes } from 'sequelize';
+import { DataTypes } from 'sequelize';
 import { sequelizedb } from "../database"
 import Order from './order.model';
 import Product from './Product';

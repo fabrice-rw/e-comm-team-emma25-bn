@@ -262,6 +262,7 @@ class auth {
             stastus: 200,
             message: "Login succefull ",
             role: role.name,
+            phone: findUser.phone_number,
             userid: findUser.id,
             token: token,
           });
