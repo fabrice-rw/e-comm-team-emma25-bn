@@ -263,7 +263,7 @@ class auth {
             message: "Login succefull ",
             role: role.name,
             phone: findUser.phone_number,
-            userid: findUser.id,
+            userId: findUser.id,
             token: token,
           });
         } else {
